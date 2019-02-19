@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { apiService } from './apiService/apiService';
 
 export default class Friends extends React.Component {
@@ -12,7 +12,8 @@ export default class Friends extends React.Component {
       question: null,
       correct: null,
       questionNumber: null,
-      nextQuestion: false
+      isLoading:true
+      
     };
   }
 
@@ -27,12 +28,12 @@ export default class Friends extends React.Component {
     apiService.getQuestions()
       .then(res => {
         console.log(res);
-
         return res
 
       })
       .then(res => {
         this.setState({
+          isLoading:false,
           time: 0,
           point: 0,
           question: res.results[0].question,
@@ -44,15 +45,6 @@ export default class Friends extends React.Component {
         this.startCounter()
       })
 
-
-
-
-
-    if (this.state.nextQuestion) {
-
-
-
-    }
   }
 
 
@@ -73,7 +65,8 @@ export default class Friends extends React.Component {
         .then(res => {
 
           this.setState(prevState => ({
-            totalTime: prevState.totalTime + this.state.time
+            totalTime: prevState.totalTime + this.state.time,
+            
           }))
           return res
         })
@@ -84,11 +77,11 @@ export default class Friends extends React.Component {
             question: res.results[0].question,
             correctAnswer: res.results[0].correct_answer,
             questionNumber: this.state.questionNumber + 1,
-            nextQuestion: true
+            
           })
         })
 
-
+       
         
     } else {
 
@@ -116,27 +109,33 @@ export default class Friends extends React.Component {
         })
     }
   }
+
+  componentWillMount(){
+    clearInterval(this.myTimer)
+  }
   render() {
 
 
     return (
 
+
+
       <View style={styles.container} >
-
-
-        {(this.state.questionNumber === 3) ?
+        {(this.state.isLoading)? <Image source={require('../quiz/assets/Spin-1s-200px.gif')} /> : <Text></Text>}
+         
+        {(this.state.questionNumber === 10) ?
           <View style={styles.container} >
           <Button
-            title="Play Another Game"
+            title="Play again"
             onPress={() =>
               this.props.navigation.navigate('Home')
             }
             /> 
-            <Text>{this.state.totalTime}</Text>
+            <Text> Total time taken to answer : {this.state.totalTime} s</Text>
+            <Text> Total score: {this.state.point}</Text>
             </View>
             :
             <View style={styles.container}>
-            <Text>{this.state.question}</Text>
             <Text>History Quiz</Text>
             <Text>{this.state.question}</Text>
             <Button
@@ -151,8 +150,8 @@ export default class Friends extends React.Component {
               raised
               onPress={() => { this.answerOnQuestion('False') }}
             />
-            <Text>{this.state.time}</Text>
-            <Text>{this.state.point}</Text>
+            <Text>Elapsed time on this question: {this.state.time} s</Text>
+           
           </View>
         }
       </View>
