@@ -112,9 +112,7 @@ export default class Friends extends React.Component {
     }
   }
 
-  componentWillMount() {
-    clearInterval(this.myTimer)
-  }
+ 
   render() {
 
 

@@ -6,8 +6,6 @@ export default class Friends extends React.Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.startText}>Hello, take our Quizz!!!</Text>
-                 
-
                 <TouchableOpacity
                 style={styles.loginScreenButton}
                 onPress={() =>
@@ -16,10 +14,6 @@ export default class Friends extends React.Component {
                 underlayColor='#fff'>
                 <Text style={styles.loginText}>Start Quiz</Text>
                 </TouchableOpacity>
-                
-               
-                
-           
             </View>
         );
     }
