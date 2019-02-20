@@ -18,15 +18,15 @@ export default class Friends extends React.Component {
     };
   }
 
-  
+ 
   componentDidMount() {
-
+    //Make timer for every question
     this.myTimer = setInterval(() => {
       this.setState(prevState => ({
         time: prevState.time + 1
       }))
     }, 1000)
-
+    //Get question
     apiService.getQuestions()
       .then(res => {
         this.setState({
@@ -43,7 +43,7 @@ export default class Friends extends React.Component {
       })
 
   }
-
+  // Logic for answer
   answerOnQuestion = (answer) =>{
   apiService.getQuestions()
   .then(res => {
